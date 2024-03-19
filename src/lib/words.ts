@@ -127,12 +127,24 @@ export const getWordOfDay = (index: number) => {
   return localeAwareUpperCase(WORDS[index % WORDS.length])
 }
 
+export const getNewSolutionWord = (oldSolution: string) => {
+  let newWord
+
+  do {
+    const randomIndex = Math.floor(Math.random() * WORDS.length)
+    newWord = WORDS[randomIndex]
+  } while (newWord === oldSolution)
+
+  return localeAwareUpperCase(newWord)
+}
+
 export const getSolution = (gameDate: Date) => {
   // const nextGameDate = getNextGameDate(gameDate)
   const index = getIndex(gameDate)
   const wordOfTheDay = getWordOfDay(index)
+
   return {
-    solution: wordOfTheDay,
+    solution: getNewSolutionWord(wordOfTheDay),
     solutionGameDate: gameDate,
     solutionIndex: index,
     // tomorrow: nextGameDate.valueOf(),

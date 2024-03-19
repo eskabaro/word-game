@@ -85,6 +85,7 @@ function App() {
   const [isRevealing, setIsRevealing] = useState(false)
   const [guesses, setGuesses] = useState<string[]>(() => {
     const loaded = loadGameStateFromLocalStorage(isLatestGame)
+
     if (loaded?.solution !== solution) {
       return []
     }
@@ -166,8 +167,21 @@ function App() {
   }
 
   useEffect(() => {
-    saveGameStateToLocalStorage(getIsLatestGame(), { guesses, solution })
+    saveGameStateToLocalStorage(getIsLatestGame(), {
+      guesses,
+      solution,
+    })
   }, [guesses])
+
+  const handlePlayAgain = () => {
+    setGuesses([])
+    setIsStatsModalOpen(false)
+
+    window.location.reload()
+
+    setIsGameLost(false)
+    setIsGameWon(false)
+  }
 
   useEffect(() => {
     if (isGameWon) {
@@ -264,23 +278,10 @@ function App() {
         }
         setIsGameLost(true)
         showErrorAlert(CORRECT_WORD_MESSAGE(solution), {
-          persist: true,
+          persist: false,
           delayMs: REVEAL_TIME_MS * solution.length + 1,
         })
       }
-    }
-  }
-
-  const handlePlayAgain = () => {
-    setGuesses([])
-    setIsStatsModalOpen(false)
-
-    if (isGameLost) {
-      setIsGameLost(false)
-    }
-
-    if (isGameWon) {
-      setIsGameWon(false)
     }
   }
 
