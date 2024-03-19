@@ -110,6 +110,7 @@ export const isValidGameDate = (date: Date) => {
 export const getIndex = (gameDate: Date) => {
   let start = firstGameDate
   let index = -1
+
   do {
     index++
     start = addDays(start, periodInDays)
@@ -127,14 +128,14 @@ export const getWordOfDay = (index: number) => {
 }
 
 export const getSolution = (gameDate: Date) => {
-  const nextGameDate = getNextGameDate(gameDate)
+  // const nextGameDate = getNextGameDate(gameDate)
   const index = getIndex(gameDate)
   const wordOfTheDay = getWordOfDay(index)
   return {
     solution: wordOfTheDay,
     solutionGameDate: gameDate,
     solutionIndex: index,
-    tomorrow: nextGameDate.valueOf(),
+    // tomorrow: nextGameDate.valueOf(),
   }
 }
 
@@ -176,5 +177,6 @@ export const getIsLatestGame = () => {
   return parsed === null || !('d' in parsed)
 }
 
-export const { solution, solutionGameDate, solutionIndex, tomorrow } =
-  getSolution(getGameDate())
+export const { solution, solutionGameDate, solutionIndex } = getSolution(
+  getGameDate()
+)

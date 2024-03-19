@@ -271,6 +271,19 @@ function App() {
     }
   }
 
+  const handlePlayAgain = () => {
+    setGuesses([])
+    setIsStatsModalOpen(false)
+
+    if (isGameLost) {
+      setIsGameLost(false)
+    }
+
+    if (isGameWon) {
+      setIsGameWon(false)
+    }
+  }
+
   return (
     <Div100vh>
       <div className="flex h-full flex-col">
@@ -331,6 +344,7 @@ function App() {
               setIsStatsModalOpen(false)
               setIsMigrateStatsModalOpen(true)
             }}
+            handlePlayAgain={handlePlayAgain}
             isHardMode={isHardMode}
             isDarkMode={isDarkMode}
             isHighContrastMode={isHighContrastMode}

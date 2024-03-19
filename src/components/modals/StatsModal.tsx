@@ -1,6 +1,5 @@
 import { ClockIcon, ShareIcon } from '@heroicons/react/outline'
 import { format } from 'date-fns'
-import Countdown from 'react-countdown'
 
 import {
   DATE_LOCALE,
@@ -10,13 +9,12 @@ import {
 import {
   ARCHIVE_GAMEDATE_TEXT,
   GUESS_DISTRIBUTION_TEXT,
-  NEW_WORD_TEXT,
   SHARE_TEXT,
   STATISTICS_TITLE,
 } from '../../constants/strings'
 import { GameStats } from '../../lib/localStorage'
 import { shareStatus } from '../../lib/share'
-import { solutionGameDate, tomorrow } from '../../lib/words'
+import { solutionGameDate } from '../../lib/words'
 import { Histogram } from '../stats/Histogram'
 import { MigrationIntro } from '../stats/MigrationIntro'
 import { StatBar } from '../stats/StatBar'
@@ -34,6 +32,7 @@ type Props = {
   handleShareToClipboard: () => void
   handleShareFailure: () => void
   handleMigrateStatsButton: () => void
+  handlePlayAgain: () => void
   isHardMode: boolean
   isDarkMode: boolean
   isHighContrastMode: boolean
@@ -52,6 +51,7 @@ export const StatsModal = ({
   handleShareToClipboard,
   handleShareFailure,
   handleMigrateStatsButton,
+  handlePlayAgain,
   isHardMode,
   isDarkMode,
   isHighContrastMode,
@@ -91,14 +91,13 @@ export const StatsModal = ({
         <div className="mt-5 columns-2 items-center items-stretch justify-center text-center dark:text-white sm:mt-6">
           <div className="inline-block w-full text-left">
             {(!ENABLE_ARCHIVED_GAMES || isLatestGame) && (
-              <div>
-                <h5>{NEW_WORD_TEXT}</h5>
-                <Countdown
-                  className="text-lg font-medium text-gray-900 dark:text-gray-100"
-                  date={tomorrow}
-                  daysInHours={true}
-                />
-              </div>
+              <button
+                type="button"
+                className="mt-2 inline-flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-center text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:text-base"
+                onClick={handlePlayAgain}
+              >
+                Play again
+              </button>
             )}
             {ENABLE_ARCHIVED_GAMES && !isLatestGame && (
               <div className="mt-2 inline-flex">
