@@ -36,7 +36,7 @@ export const GlobalMobile = ({
         </Tab>
         <Tab
           icon={
-            <CogIcon className='className="h-6 dark:stroke-white" w-6 cursor-pointer' />
+            <CogIcon className="h-6 w-6 cursor-pointer dark:stroke-white" />
           }
         >
           <SettingsModalContent {...settingsModalContent} />
