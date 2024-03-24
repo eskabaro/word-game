@@ -10,6 +10,7 @@ import { AlertContainer } from './components/alerts/AlertContainer'
 import { Grid } from './components/grid/Grid'
 import { Keyboard } from './components/keyboard/Keyboard'
 import { DatePickerModal } from './components/modals/DatePickerModal'
+import { GlobalMobile } from './components/modals/GlobalMobile'
 import { InfoModal } from './components/modals/InfoModal'
 import { MigrateStatsModal } from './components/modals/MigrateStatsModal'
 import { SettingsModal } from './components/modals/SettingsModal'
@@ -70,6 +71,7 @@ function App() {
   const [isDatePickerModalOpen, setIsDatePickerModalOpen] = useState(false)
   const [isMigrateStatsModalOpen, setIsMigrateStatsModalOpen] = useState(false)
   const [isSettingsModalOpen, setIsSettingsModalOpen] = useState(false)
+  const [isGlobalMobileModalOpen, setIsGlobalMobileModalOpen] = useState(false)
   const [currentRowClass, setCurrentRowClass] = useState('')
   const [isGameLost, setIsGameLost] = useState(false)
   const [isDarkMode, setIsDarkMode] = useState(
@@ -285,6 +287,38 @@ function App() {
     }
   }
 
+  const statsProps = {
+    isDarkMode,
+    isGameWon,
+    isGameLost,
+    isHardMode,
+    isHighContrastMode,
+    isLatestGame,
+    solution,
+    guesses,
+    numberOfGuessesMade: guesses.length,
+    gameStats: stats,
+    handlePlayAgain,
+    handleMigrateStatsButton: () => {
+      setIsStatsModalOpen(false)
+      setIsMigrateStatsModalOpen(true)
+    },
+    handleShareFailure: () =>
+      showErrorAlert(SHARE_FAILURE_TEXT, {
+        durationMs: LONG_ALERT_TIME_MS,
+      }),
+    handleShareToClipboard: () => showSuccessAlert(GAME_COPIED_MESSAGE),
+  }
+
+  const settingsProps = {
+    isDarkMode,
+    isHardMode,
+    isHighContrastMode,
+    handleDarkMode,
+    handleHardMode,
+    handleHighContrastMode,
+  }
+
   return (
     <Div100vh>
       <div className="flex h-full flex-col">
@@ -293,6 +327,7 @@ function App() {
           setIsStatsModalOpen={setIsStatsModalOpen}
           setIsDatePickerModalOpen={setIsDatePickerModalOpen}
           setIsSettingsModalOpen={setIsSettingsModalOpen}
+          setIsGlobalMobileModalOpen={setIsGlobalMobileModalOpen}
         />
 
         {!isLatestGame && (
@@ -303,7 +338,6 @@ function App() {
             </p>
           </div>
         )}
-
         <div className="mx-auto flex w-full grow flex-col px-1 pt-2 pb-8 sm:px-6 md:max-w-7xl lg:px-8 short:pb-2 short:pt-2">
           <div className="flex grow flex-col justify-center pb-6 short:pb-2">
             <Grid
@@ -329,27 +363,7 @@ function App() {
           <StatsModal
             isOpen={isStatsModalOpen}
             handleClose={() => setIsStatsModalOpen(false)}
-            solution={solution}
-            guesses={guesses}
-            gameStats={stats}
-            isLatestGame={isLatestGame}
-            isGameLost={isGameLost}
-            isGameWon={isGameWon}
-            handleShareToClipboard={() => showSuccessAlert(GAME_COPIED_MESSAGE)}
-            handleShareFailure={() =>
-              showErrorAlert(SHARE_FAILURE_TEXT, {
-                durationMs: LONG_ALERT_TIME_MS,
-              })
-            }
-            handleMigrateStatsButton={() => {
-              setIsStatsModalOpen(false)
-              setIsMigrateStatsModalOpen(true)
-            }}
-            handlePlayAgain={handlePlayAgain}
-            isHardMode={isHardMode}
-            isDarkMode={isDarkMode}
-            isHighContrastMode={isHighContrastMode}
-            numberOfGuessesMade={guesses.length}
+            {...statsProps}
           />
           <DatePickerModal
             isOpen={isDatePickerModalOpen}
@@ -367,12 +381,13 @@ function App() {
           <SettingsModal
             isOpen={isSettingsModalOpen}
             handleClose={() => setIsSettingsModalOpen(false)}
-            isHardMode={isHardMode}
-            handleHardMode={handleHardMode}
-            isDarkMode={isDarkMode}
-            handleDarkMode={handleDarkMode}
-            isHighContrastMode={isHighContrastMode}
-            handleHighContrastMode={handleHighContrastMode}
+            {...settingsProps}
+          />
+          <GlobalMobile
+            isOpen={isGlobalMobileModalOpen}
+            handleClose={() => setIsGlobalMobileModalOpen(false)}
+            settingsModalContent={settingsProps}
+            statsModalContent={statsProps}
           />
           <AlertContainer />
         </div>

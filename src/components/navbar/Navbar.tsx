@@ -5,6 +5,7 @@ import {
   InformationCircleIcon,
 } from '@heroicons/react/outline'
 
+import { ReactComponent as BarsIcon } from '../../bars.svg'
 import { ENABLE_ARCHIVED_GAMES } from '../../constants/settings'
 import { GAME_TITLE } from '../../constants/strings'
 
@@ -13,6 +14,7 @@ type Props = {
   setIsStatsModalOpen: (value: boolean) => void
   setIsDatePickerModalOpen: (value: boolean) => void
   setIsSettingsModalOpen: (value: boolean) => void
+  setIsGlobalMobileModalOpen: (value: boolean) => void
 }
 
 export const Navbar = ({
@@ -20,11 +22,12 @@ export const Navbar = ({
   setIsStatsModalOpen,
   setIsDatePickerModalOpen,
   setIsSettingsModalOpen,
+  setIsGlobalMobileModalOpen,
 }: Props) => {
   return (
     <div className="navbar">
       <div className="navbar-content px-5 short:h-auto">
-        <div className="flex">
+        <div className="hidden sm:flex">
           <InformationCircleIcon
             className="h-6 w-6 cursor-pointer dark:stroke-white"
             onClick={() => setIsInfoModalOpen(true)}
@@ -37,7 +40,13 @@ export const Navbar = ({
           )}
         </div>
         <p className="text-xl font-bold dark:text-white">{GAME_TITLE}</p>
-        <div className="right-icons">
+        <div className="sm:hidden">
+          <BarsIcon
+            className="h-6 w-6 cursor-pointer dark:stroke-white"
+            onClick={() => setIsGlobalMobileModalOpen(true)}
+          />
+        </div>
+        <div className="hidden sm:flex">
           <ChartBarIcon
             className="mr-3 h-6 w-6 cursor-pointer dark:stroke-white"
             onClick={() => setIsStatsModalOpen(true)}

@@ -39,44 +39,37 @@ type Props = {
   numberOfGuessesMade: number
 }
 
-export const StatsModal = ({
-  isOpen,
-  handleClose,
+export type StatsProps = Omit<Props, 'isOpen' | 'handleClose'>
+
+export const StatsModalContent = ({
+  gameStats,
+  handleMigrateStatsButton,
+  isLatestGame,
+  isGameWon,
+  numberOfGuessesMade,
+  isGameLost,
+  handlePlayAgain,
   solution,
   guesses,
-  gameStats,
-  isLatestGame,
-  isGameLost,
-  isGameWon,
-  handleShareToClipboard,
-  handleShareFailure,
-  handleMigrateStatsButton,
-  handlePlayAgain,
   isHardMode,
   isDarkMode,
   isHighContrastMode,
-  numberOfGuessesMade,
-}: Props) => {
+  handleShareToClipboard,
+  handleShareFailure,
+}: StatsProps) => {
   if (gameStats.totalGames <= 0) {
     return (
-      <BaseModal
-        title={STATISTICS_TITLE}
-        isOpen={isOpen}
-        handleClose={handleClose}
-      >
+      <>
         <StatBar gameStats={gameStats} />
         {ENABLE_MIGRATE_STATS && (
           <MigrationIntro handleMigrateStatsButton={handleMigrateStatsButton} />
         )}
-      </BaseModal>
+      </>
     )
   }
+
   return (
-    <BaseModal
-      title={STATISTICS_TITLE}
-      isOpen={isOpen}
-      handleClose={handleClose}
-    >
+    <>
       <StatBar gameStats={gameStats} />
       <h4 className="text-lg font-medium leading-6 text-gray-900 dark:text-gray-100">
         {GUESS_DISTRIBUTION_TEXT}
@@ -141,6 +134,18 @@ export const StatsModal = ({
           <MigrationIntro handleMigrateStatsButton={handleMigrateStatsButton} />
         </div>
       )}
+    </>
+  )
+}
+
+export const StatsModal = ({ isOpen, handleClose, ...props }: Props) => {
+  return (
+    <BaseModal
+      title={STATISTICS_TITLE}
+      isOpen={isOpen}
+      handleClose={handleClose}
+    >
+      <StatsModalContent {...props} />
     </BaseModal>
   )
 }
